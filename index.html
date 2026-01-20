@@ -1,9 +1,6 @@
-
-// HTML page stored in PROGMEM (Improved Web Dashboard UI/UX) - Modified to include Factory Reset Button
-const char webpageCode[] PROGMEM = R"===(
-`
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,7 +52,7 @@ const char webpageCode[] PROGMEM = R"===(
         .sidebar {
             background-color: var(--primary);
             color: white;
-            padding-top: 20px;
+            padding-top: 10px;
             position: fixed;
             height: 100vh;
             width: 240px;
@@ -88,6 +85,13 @@ const char webpageCode[] PROGMEM = R"===(
         .nav-item {
             padding: 0 15px;
             margin-bottom: 5px;
+        }
+
+        .firmware-version {
+            padding: 10px;
+            margin-top: 320px;
+            color: #6c757d;
+            
         }
 
         .nav-link {
@@ -276,6 +280,10 @@ const char webpageCode[] PROGMEM = R"===(
                 </li>
             </ul>
             <!-- Menu End -->
+            <div class="firmware-version">
+                <p id="version">Version : 1.6</p>
+
+            </div>
         </div>
         <!-- Sidebar Navigation -->
 
@@ -415,7 +423,7 @@ const char webpageCode[] PROGMEM = R"===(
                 <!-- Metric Cards Ultrasonic End -->
             </div>
             <!-- Ultrasonic Area End -->
-            
+
             <!-- Pressure Area Start -->
             <div id="pressure-section" class="page-section">
                 <div class="page-header">
@@ -505,6 +513,8 @@ const char webpageCode[] PROGMEM = R"===(
                     // Control Section Updates
                     ubdatedashboardPressureValues(data);
 
+                    ubdateFirmwareVersionValues(data);
+
                     // Update timestamp
                     const now = new Date();
                     document.getElementById('update-timestamp').textContent = `Last updated: ${now.toLocaleTimeString()}`;
@@ -542,8 +552,6 @@ const char webpageCode[] PROGMEM = R"===(
 
         }
 
-
-
         function updateElement(id, html) {
             const element = document.getElementById(id);
             if (element) {
@@ -551,9 +559,20 @@ const char webpageCode[] PROGMEM = R"===(
             }
         }
 
+        function showAlert(message, type, alertElementId) {
+            const alertDiv = document.getElementById(alertElementId);
+            if (alertDiv) {
+                alertDiv.textContent = message;
+                alertDiv.className = `alert alert-${type}`;
+                alertDiv.style.display = 'block';
+                setTimeout(() => {
+                    alertDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
         // Initial update and set interval
         updateValues();
-        setInterval(updateValues, 3000); // Update every 3 seconds
+        setInterval(updateValues, 2000); // Update every 3 seconds
 
         // Set initial page to dashboard
         showPage('pf');
@@ -562,4 +581,3 @@ const char webpageCode[] PROGMEM = R"===(
 </body>
 
 </html>
-)===";
